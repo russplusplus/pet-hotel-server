@@ -18,7 +18,8 @@ def create_app(test_config=None):
         # load the test config if passed in
         app.config.from_mapping(test_config)
     
-    
+    # app.config.from_object(os.environ['APP_SETTINGS'])
+    # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
     # ensure the instance folder exists
     try:
@@ -26,6 +27,7 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    # db = SQLAlchemy(app) 
     # a simple page that says hello
     @app.route('/hello')
     def hello():
@@ -33,14 +35,13 @@ def create_app(test_config=None):
 
     @app.route('/user/whatever', methods=['GET', 'POST', 'PUT', 'DELETE'])
     def routestuff():
-        return 'Hello new route!'
+        if request.method == 'GET':
+            return 'Hello GET route'
+        if request.method == 'POST':
+            return 'Hello POST route'
+
 
     
 
     return app
 
-# app = create_app()
-
-# app.config.from_object(os.environ['APP_SETTINGS'])
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# db = SQLAlchemy(app) 
